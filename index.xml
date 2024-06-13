@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>A.Hebbani&#39;s Profile</title>
-    <link>https://adityahebbani.github.io/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on A.Hebbani&#39;s Profile</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <atom:link href="https://adityahebbani.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
