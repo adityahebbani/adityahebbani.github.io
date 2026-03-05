@@ -1,12 +1,11 @@
-# Void - Minimalist Multilingual Portfolio Template
+# Void - Minimalist Portfolio Template
 
-A clean, minimalist portfolio template built with Astro and TailwindCSS, featuring full internationalization support using `@ariaskit/astro-i18n`.
+A clean, minimalist portfolio template built with Astro and TailwindCSS.
 
 ![Hero](.github/571_1x_shots_so.png)
 
 ## ✨ Features
 
-- **🌍 Multilingual Support** - Built-in i18n with English, Spanish, and Portuguese
 - **⚡ Astro 5** - Fast, modern static site generation
 - **🎨 TailwindCSS 4** - Utility-first styling with dark mode
 - **📱 Responsive Design** - Mobile-first approach
@@ -19,7 +18,6 @@ A clean, minimalist portfolio template built with Astro and TailwindCSS, featuri
 - **Framework**: [Astro](https://astro.build/)
 - **Styling**: [TailwindCSS](https://tailwindcss.com/)
 - **Icons**: [Lucide](https://lucide.dev/)
-- **Internationalization**: [@ariaskit/astro-i18n](https://github.com/JorgeRosbel/astro-i18n)
 - **Package Manager**: pnpm
 
 ## 🚀 Quick Start
@@ -55,34 +53,9 @@ pnpm build
 pnpm preview
 ```
 
-## 🌐 Internationalization
+## 🧾 Content
 
-This template uses `@ariaskit/astro-i18n` for seamless multilingual support. The i18n system is configured for:
-
-- **English** (`en`) - Default locale
-- **Spanish** (`es`)
-- **Portuguese** (`pt`)
-
-### Adding New Languages
-
-1. Create a new JSON file in `/i18n/` (e.g., `fr.json`)
-2. Copy the structure from `en.json`
-3. Add the new locale to `src/pages/[lang]/index.astro` in the `getStaticPaths` function
-4. Update the i18n library configuration if needed
-
-### Translation Files
-
-All translations are stored in `/i18n/`:
-- `en.json` - English translations
-- `es.json` - Spanish translations  
-- `pt.json` - Portuguese translations
-
-Each file contains the same structure with keys for:
-- Navigation items
-- Hero section content
-- Project descriptions
-- Experience details
-- Contact information
+Edit your information in `src/content/site.json`.
 
 ## 📁 Project Structure
 
@@ -96,12 +69,12 @@ void/
 │   │   ├── Projects.astro
 │   │   ├── Experience.astro
 │   │   └── ...
+│   ├── content/         # Site copy/data
+│   │   └── site.json
 │   ├── layouts/        # Page layouts
 │   ├── pages/          # Route pages
-│   │   ├── index.astro      # Root redirect
-│   │   └── [lang]/          # Localized pages
+│   │   └── index.astro
 │   └── styles/         # Global styles
-├── i18n/               # Translation files
 ├── astro.config.mjs    # Astro configuration
 └── package.json        # Dependencies
 ```
@@ -110,7 +83,7 @@ void/
 
 ### Personal Information
 
-Edit the translation files in `/i18n/` to update:
+Edit `src/content/site.json` to update:
 - Personal name and title
 - Project descriptions
 - Experience details

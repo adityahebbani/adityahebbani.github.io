@@ -1,3 +1,64 @@
 ---
-return Astro.redirect('/en');
+import Layout from "@/src/layouts/Layout.astro";
+import Header from "@/src/components/Header.astro";
+import Hero from "@/src/components/Hero.astro";
+import Projects from "@/src/components/Projects.astro";
+import Experience from "@/src/components/Experience.astro";
+import Skills from "@/src/components/Skills.astro";
+import Footer from "@/src/components/Footer.astro";
+
+import content from "@/src/content/site.json";
+
+const nav = [
+	{ href: `#${content.nav.about}`, text: content.nav.about },
+	{ href: `#${content.nav.experience}`, text: content.nav.experience },
+	{ href: `#${content.nav.projects}`, text: content.nav.projects },
+	{ href: `#${content.nav.contact}`, text: content.nav.contact },
+];
 ---
+
+<Layout
+	locale="en"
+	title={content.hero.name}
+	description={content.description}
+>
+	<Header nav={nav} />
+
+	<main>
+		<Hero
+			id={content.nav.about}
+			name={content.hero.name}
+			title={content.hero.title}
+			p1={content.hero.p1}
+			p2={content.hero.p2}
+			p3={content.hero.p3}
+		/>
+
+		<Projects
+			id={content.nav.projects}
+			title={content.projects.title}
+			projects={content.projects.items}
+		/>
+
+		<Experience
+			id={content.nav.experience}
+			title={content.experience.title}
+			jobs={content.experience.items}
+		/>
+
+		<Skills heading={content.skills.heading} content={content.skills.items} />
+	</main>
+
+	<Footer
+		id={content.nav.contact}
+		status={content.contact.status}
+		email_label={content.contact.email_label}
+		email_url={content.contact.email_url}
+		github_label={content.contact.github_label}
+		github_url={content.contact.github_url}
+		x_label={content.contact.x_label}
+		x_url={content.contact.x_url}
+		linkedin_label={content.contact.linkedin_label}
+		linkedin_url={content.contact.linkedin_url}
+	/>
+</Layout>
