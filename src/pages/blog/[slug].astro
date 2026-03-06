@@ -1,0 +1,76 @@
+---
+import Layout from "@/src/layouts/Layout.astro";
+import Header from "@/src/components/Header.astro";
+import Footer from "@/src/components/Footer.astro";
+
+import content from "@/src/content/site.json";
+import { getCollection, getEntryBySlug } from "astro:content";
+
+export async function getStaticPaths() {
+	const posts = await getCollection("blog");
+	return posts.filter((post) => !post.data.draft).map((post) => ({
+		params: { slug: post.slug },
+	}));
+}
+
+const { slug } = Astro.params;
+if (!slug) {
+	throw new Error("Missing blog slug");
+}
+
+const post = await getEntryBySlug("blog", slug);
+if (!post || post.data.draft) {
+	return Astro.redirect("/blog", 302);
+}
+
+const { Content } = await post.render();
+
+const nav = [
+	{ href: `/#${content.nav.about}`, text: content.nav.about },
+	{ href: `/#${content.nav.experience}`, text: content.nav.experience },
+	{ href: `/#${content.nav.projects}`, text: content.nav.projects },
+	{ href: `/blog`, text: content.nav.blog ?? "blog" },
+	{ href: `/#${content.nav.contact}`, text: content.nav.contact },
+];
+---
+
+<Layout locale="en" title={`${post.data.title} — ${content.hero.name}`} description={post.data.description ?? content.description}>
+	<Header nav={nav} />
+
+	<main class="mt-50">
+		<a class="opacity-50 hover:opacity-100 transition-opacity" href="/blog">← Back to blog</a>
+
+		<article class="mt-6">
+			<header class="mb-8">
+				<h1 class="mb-2 font-semibold text-xl">{post.data.title}</h1>
+				<p class="opacity-50 text-sm">
+					{post.data.pubDate.toLocaleDateString("en", {
+						year: "numeric",
+						month: "short",
+						day: "2-digit",
+					})}
+				</p>
+				{post.data.description && (
+					<p class="opacity-50 mt-3">{post.data.description}</p>
+				)}
+			</header>
+
+			<div class="[&_p]:mb-6 [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:pl-5 [&_a]:underline [&_a]:underline-offset-4">
+				<Content />
+			</div>
+		</article>
+	</main>
+
+	<Footer
+		id={content.nav.contact}
+		status={content.contact.status}
+		email_label={content.contact.email_label}
+		email_url={content.contact.email_url}
+		github_label={content.contact.github_label}
+		github_url={content.contact.github_url}
+		x_label={content.contact.x_label}
+		x_url={content.contact.x_url}
+		linkedin_label={content.contact.linkedin_label}
+		linkedin_url={content.contact.linkedin_url}
+	/>
+</Layout>
