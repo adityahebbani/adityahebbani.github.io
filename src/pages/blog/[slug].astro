@@ -34,7 +34,7 @@ const nav = [
 ];
 ---
 
-<Layout locale="en" title={`${post.data.title} — ${content.hero.name}`} description={post.data.description ?? content.description}>
+<Layout locale="en" siteName={content.hero.name} title={`${post.data.title} — ${content.hero.name}`} description={post.data.description ?? content.description}>
 	<Header nav={nav} />
 
 	<main class="mt-50">

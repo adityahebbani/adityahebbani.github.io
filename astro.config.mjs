@@ -13,6 +13,15 @@ function normalizeBase(base) {
   return result;
 }
 
+function normalizeSiteUrl(url) {
+  if (!url) return null;
+  let result = url.trim();
+  if (!result) return null;
+  if (!/^https?:\/\//i.test(result)) result = `https://${result}`;
+  if (!result.endsWith('/')) result = `${result}/`;
+  return result;
+}
+
 function inferGitHubPagesUrls() {
   const repoSlug = process.env.GITHUB_REPOSITORY;
   if (!repoSlug) return null;
@@ -29,8 +38,25 @@ function inferGitHubPagesUrls() {
   return { base, site };
 }
 
+function inferHostingSiteUrl() {
+  // Vercel
+  if (process.env.VERCEL_URL) return normalizeSiteUrl(process.env.VERCEL_URL);
+
+  // Netlify: URL=https://<site>.netlify.app (or custom domain)
+  if (process.env.URL) return normalizeSiteUrl(process.env.URL);
+
+  // Cloudflare Pages: CF_PAGES_URL=https://<project>.pages.dev
+  if (process.env.CF_PAGES_URL) return normalizeSiteUrl(process.env.CF_PAGES_URL);
+
+  return null;
+}
+
 const inferred = process.env.GITHUB_ACTIONS === 'true' ? inferGitHubPagesUrls() : null;
-const site = process.env.SITE_URL ?? inferred?.site ?? 'https://example.com/';
+const site =
+  normalizeSiteUrl(process.env.SITE_URL) ??
+  inferred?.site ??
+  inferHostingSiteUrl() ??
+  'https://example.com/';
 const base = normalizeBase(process.env.BASE_PATH ?? inferred?.base ?? '/');
 
 // https://astro.build/config

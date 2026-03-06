@@ -8,14 +8,18 @@ type FontMimeType = 'font/ttf' | 'font/otf' | 'font/woff' | 'font/woff2' | 'appl
 type FaviconRel = 'icon' | 'shortcut icon' | 'apple-touch-icon' | 'apple-touch-icon-precomposed' | 'mask-icon' | 'manifest' | 'apple-touch-startup-image' | 'fluid-icon' | 'preload';
 type FaviconMimeType = 'image/x-icon' | 'image/png' | 'image/svg+xml' | 'image/gif' | 'image/webp' | 'image/jpeg' | 'image/jpg' | 'image/avif';
 
+type MetadataImage = ImageMetadata | string;
+
 interface Props {
   title: string;
   description: string;
-  image: ImageMetadata;
+  image: MetadataImage;
   enableClientRouter: boolean;
   preloadFonts?: { href: string; type: FontMimeType }[];
   loadRSS?: boolean;
   ogType: OgType;
+  siteName?: string;
+  twitterSite?: string;
   favicons: {
     rel: FaviconRel;
     type: FaviconMimeType;
@@ -38,11 +42,21 @@ const {
   ogType = 'website',
   image,
   loadRSS,
+  siteName,
+  twitterSite,
   favicons,
   googleSiteVerification,
   lang,
   alternateLinks = []
 } = Astro.props as Props;
+
+const imageContent = (() => {
+  if (typeof image === 'string') return image;
+  return new URL(image.src, Astro.url).toString();
+})();
+
+const ogUrl = canonicalURL.toString();
+const resolvedSiteName = siteName ?? title;
 ---
 
 <meta charset="utf-8" />
@@ -111,10 +125,11 @@ const {
 <meta name="description" content={description} />
 
 <meta property="og:type" content={ogType} />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={ogUrl} />
+<meta property="og:site_name" content={resolvedSiteName} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image.src, Astro.url)} />
+<meta property="og:image" content={imageContent} />
 
 <meta property="og:locale" content={lang} />
 {
@@ -124,10 +139,11 @@ const {
 }
 
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:url" content={ogUrl} />
+{twitterSite && <meta property="twitter:site" content={twitterSite} />}
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+<meta property="twitter:image" content={imageContent} />
 
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 
